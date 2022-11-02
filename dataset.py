@@ -50,6 +50,10 @@ def load_dataset(raw=True, test_type="Arithmetic"):
 
 
 def load_labels():
+    '''
+    Loads labels from the dataset and transforms the label values to binary values.
+    Values larger than 5 are set to 1 and values lower than or equal to 5 are set to zero.
+    '''
     labels = pd.read_excel(LABELS_PATH)
     labels = labels.rename(columns=COLUMNS_TO_RENAME)
     labels = labels[1:]
@@ -60,7 +64,7 @@ def load_labels():
 
 def convert_to_epochs(dataset, channels, sfreq):
     '''
-    Splits EEG data into epochs with length specified by epoch_length
+    Splits EEG data into epochs with length 1 sec
     '''
     epoched_dataset = np.empty(
         (dataset.shape[0], dataset.shape[2]//sfreq, channels, sfreq))

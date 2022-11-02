@@ -4,34 +4,59 @@ Classification of stress using EEG recordings from the SAM 40 dataset. A descrip
 ## Files
 The code is split into Jupyter notebooks.
 
-**load_dataset**
-Contains functions for loading and reshaping the data.
+**dataset**
 
-The function ```load_dataset(raw=True, test_type="Arithmetic")``` loads either the filtered or raw dataset, which is specified by ```raw```. The argument ```test_type```specifies which of the three test types to use (Arithmetic, Mirror or Stroop).
+Contains functions for loading and transforming the dataset
 
-The function ```convert_to_epochs(dataset, channels, sfreq, epoch_length=1)``` converts the data into epochs where the length is specified by ```epoch_length```.
+```load_dataset(raw=True, test_type="Arithmetic")```
+Loads data from the SAM 40 Dataset with the test specified by test_type.
+The raw flag specifies whether to use the raw data or the filtered data.
+Returns a Numpy Array with shape (120, 32, 3200).
 
-**load_labels**
+```load_labels()```
 
-The function ```load_labels()``` loads the labels from an Excel spreadsheet and sets all stress ratings above 5 to ```True``` and the other values to ```False```.
+Loads labels from the dataset and transforms the label values to binary values.
+Values larger than 5 are set to 1 and values lower than or equal to 5 are set to zero.
+
+```convert_to_epochs(dataset, channels, sfreq)```
+
+Splits EEG data into epochs with length 1 sec
+
 
 **filtering**
 
-An experimental file focused on filtering the data and removing artifacts through linear filters and ICA.
+An experimental notebook focused on filtering the data and removing artifacts through linear filters and ICA.
 
 The filtering is performed using the ```mne``` package which is a Python package specialised in MEG and EEG analysis and visualisation.
 
-**features_spectral**
+**features**
 
-Extracts features based on the the relative powers of the frequency bands. More information on these values can be found [here](https://www.mdpi.com/1424-8220/21/11/3786/htm).
+```time_series_features(data, channels)```
+Generate the features mean, variance, skewness and rms using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials*n_secs, n_channels*n_features)
+
+```nonlinear_features(data, channels)```
+Compute the features Hurst exponent, Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials*n_secs, n_channels*n_features)
+
+```entropy_features(data, channels, sfreq)```
+ Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials*n_secs, n_channels*n_features)
+
+```hjorth_features(data, channels, sfreq)```
+Compute the features Hjorth mobility (spectral), Hjorth complexity (spectral), Hjorth mobility and Hjorth complexity using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials*n_secs, n_channels*n_features)
+
+```freq_band_features(data, channels, sfreq, freq_bands)```
+Compute the frequency bands delta, theta, alpha, beta and gamma using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials*n_secs, n_channels*n_features)
 
 
-**classification_voltage_features**
+**classification**
 
-Classification using the full epoched time-series for each subject and trial. Thus, the features of the dataset are the voltages at each instance.
-
-This notebook and the notebook **classification_spectral** use the same classifers (KNN, SVM and a neural network).
-
-**classification_spectral**
-
-Classification using the spectral features computed in **features_spectral**. 
+Classification using features loaded from **features.py**. Uses an LR classifer, KNN classifier, SVM classifier and an MLP.

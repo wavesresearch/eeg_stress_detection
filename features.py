@@ -1,10 +1,15 @@
-import mne
 import mne_features
 import numpy as np
 
 def time_series_features(data, channels):
+    '''
+    Generate the features mean, variance, skewness and rms using the package mne_features.
+    The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+    The output is on the form (n_trials*n_secs, n_channels*n_features)
+    '''
     stats_to_compute = 4
     n_features = channels* stats_to_compute
+    print(data.shape)
 
     features = np.empty([data.shape[0], data.shape[1], n_features])
     for i, trial in enumerate(data):
@@ -19,6 +24,11 @@ def time_series_features(data, channels):
     return features
 
 def nonlinear_features(data, channels):
+    '''
+    Compute the features Hurst exponent, Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
+    The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+    The output is on the form (n_trials*n_secs, n_channels*n_features)
+    '''
     stats_to_compute = 3
     n_features = channels* stats_to_compute
 
@@ -28,13 +38,17 @@ def nonlinear_features(data, channels):
             hurst = mne_features.univariate.compute_hurst_exp(second)
             higuchi = mne_features.univariate.compute_higuchi_fd(second)
             katz = mne_features.univariate.compute_katz_fd(second)
-            svd_entropy = mne_features.univariate.compute_svd_entropy(second)
             entropies = np.concatenate([hurst, higuchi, katz])
             features[i][j] = entropies
     features = features.reshape([features.shape[0]*features.shape[1], features.shape[2]])
     return features
 
 def entropy_features(data, channels, sfreq):
+    '''
+    Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
+    The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+    The output is on the form (n_trials*n_secs, n_channels*n_features)
+    '''
     stats_to_compute = 4
     n_features = channels* stats_to_compute
 
@@ -51,6 +65,11 @@ def entropy_features(data, channels, sfreq):
     return features
 
 def hjorth_features(data, channels, sfreq):
+    '''
+    Compute the features Hjorth mobility (spectral), Hjorth complexity (spectral), Hjorth mobility and Hjorth complexity using the package mne_features.
+    The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+    The output is on the form (n_trials*n_secs, n_channels*n_features)
+    '''
     stats_to_compute = 4
     n_features = channels* stats_to_compute
 
@@ -67,6 +86,11 @@ def hjorth_features(data, channels, sfreq):
     return features
 
 def freq_band_features(data, channels, sfreq, freq_bands):
+    '''
+    Compute the frequency bands delta, theta, alpha, beta and gamma using the package mne_features.
+    The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+    The output is on the form (n_trials*n_secs, n_channels*n_features)
+    '''
     features = np.empty([0, channels*(len(freq_bands)-1)])
     for trial in data:
         PSDh2 = np.empty([0, channels*(len(freq_bands)-1)])
