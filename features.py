@@ -24,7 +24,7 @@ def time_series_features(data, n_channels):
     return features
 
 
-def nonlinear_features(data, n_channels):
+def fractal_features(data, n_channels):
     '''
     Compute the features Hurst exponent, Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
     The data should be on the form (n_trials, n_secs, n_channels, sfreq)
