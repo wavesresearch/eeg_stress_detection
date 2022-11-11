@@ -67,7 +67,10 @@ Compute the frequency bands delta, theta, alpha, beta and gamma using the packag
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials*n_secs, n_channels*n_features)
 
-
 **classification**
 
 Classification using features loaded from **features.py**. Uses an LR classifer, KNN classifier, SVM classifier and an MLP.
+
+**variables**
+
+Script containing the global variables used in the project.
