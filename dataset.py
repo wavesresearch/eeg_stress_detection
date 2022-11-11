@@ -1,10 +1,12 @@
-import scipy
 import os
+
 import numpy as np
 import pandas as pd
+import scipy
 
 DIR_RAW = 'Data/raw_data'
 DIR_FILTERED = 'Data/filtered_data'
+DIR_ICA_FILTERED = 'Data/ica_filtered_data'
 
 LABELS_PATH = 'Data/scales.xls'
 
@@ -29,22 +31,33 @@ TEST_TYPE_COLUMNS = {
     'Stroop': ['t1_stroop', 't2_stroop', 't3_stroop']
 }
 
+DATA_TYPES = ["raw", "filtered", "ica_filtered"]
 
-def load_dataset(raw=True, test_type="Arithmetic"):
+def load_dataset(data_type="ica_filtered", test_type="Arithmetic"):
     '''
     Loads data from the SAM 40 Dataset with the test specified by test_type.
-    The raw flag specifies whether to use the raw data or the filtered data.
+    The data_type parameter specifies which of the datasets to load. Possible values
+    are raw, filtered, ica_filtered.
     Returns a Numpy Array with shape (120, 32, 3200).
     '''
     assert (test_type in TEST_TYPES)
 
-    if raw:
+    assert (data_type in DATA_TYPES)
+
+    if data_type == "ica_filtered" and test_type != "Arithmetic":
+        print("Data of type", data_type, "does not have test type", test_type)
+        return 0
+
+    if data_type == "raw":
         dir = DIR_RAW
         data_key = 'Data'
-    else:
+    elif data_type == "filtered":
         dir = DIR_FILTERED
         data_key = 'Clean_data'
-
+    else:
+        dir = DIR_ICA_FILTERED
+        data_key = 'Clean_data'
+        
     dataset = np.empty((120, 32, 3200))
 
     counter = 0

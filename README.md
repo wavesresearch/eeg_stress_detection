@@ -8,15 +8,22 @@ The code is split into Jupyter notebooks.
 
 Contains functions for loading and transforming the dataset
 
-```load_dataset(raw=True, test_type="Arithmetic")```
+```load_dataset(data_type="ica_filtered", test_type="Arithmetic")```
+
 Loads data from the SAM 40 Dataset with the test specified by test_type.
-The raw flag specifies whether to use the raw data or the filtered data.
+The data_type parameter specifies which of the datasets to load. Possible values are raw, filtered, ica_filtered.
 Returns a Numpy Array with shape (120, 32, 3200).
 
 ```load_labels()```
 
 Loads labels from the dataset and transforms the label values to binary values.
 Values larger than 5 are set to 1 and values lower than or equal to 5 are set to zero.
+
+```format_labels(labels, test_type="Arithmetic", epochs=1)```
+
+Filter the labels to keep the labels from the test type specified by test_type.
+Repeat the labels by the amount of epochs in a recording, specified by epochs.
+
 
 ```convert_to_epochs(dataset, channels, sfreq)```
 
@@ -25,7 +32,11 @@ Splits EEG data into epochs with length 1 sec
 
 **filtering**
 
-An experimental notebook focused on filtering the data and removing artifacts through linear filters and ICA.
+A notebook for filtering data using bandpass filtering, Savitzky-Golay filtering and ICA filtering.
+
+ICA components can be removed using visual inspection of the components to determine the ones corresponding to noise and artifacts, and selection can be performed using a GUI.
+
+The data can be saved to a directory to be used for classification.
 
 The filtering is performed using the ```mne``` package which is a Python package specialised in MEG and EEG analysis and visualisation.
 
@@ -36,7 +47,7 @@ Generate the features mean, variance, skewness and rms using the package mne_fea
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials*n_secs, n_channels*n_features)
 
-```nonlinear_features(data, channels)```
+```fractal_features(data, channels)```
 Compute the features Hurst exponent, Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials*n_secs, n_channels*n_features)
