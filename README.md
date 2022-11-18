@@ -43,25 +43,25 @@ The filtering is performed using the [```mne``` package](https://mne.tools/stabl
 
 ```time_series_features(data, channels)```
 
-Generate the features mean, variance, skewness and rms using the package mne_features.
+Compute the features peak-to-peak amplitude, variance and rms using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
 ```fractal_features(data, channels)```
 
-Compute the features Hurst exponent, Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
+Compute the Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
 ```entropy_features(data, channels, sfreq)```
 
- Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
+Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
 ```hjorth_features(data, channels, sfreq)```
 
-Compute the features Hjorth mobility (spectral), Hjorth complexity (spectral), Hjorth mobility and Hjorth complexity using the package mne_features.
+Compute the features Hjorth mobility (spectral) and Hjorth complexity (spectral) using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
