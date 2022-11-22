@@ -6,10 +6,15 @@ import variables as v
 
 def load_dataset(data_type="ica_filtered", test_type="Arithmetic"):
     '''
-    Loads data from the SAM 40 Dataset with the test specified by test_type.
-    The data_type parameter specifies which of the datasets to load. Possible values
-    are raw, filtered, ica_filtered.
-    Returns a Numpy Array with shape (120, 32, 3200).
+    Loads data from the SAM 40 Dataset.
+    
+    Args:
+        data_type (string): The data type to load. Defaults to "ica_filtered".
+        test_type (string): The test type to load. Defaults to "Arithmetic".
+    
+    Returns:
+        ndarray: The specified dataset.
+
     '''
     assert (test_type in v.TEST_TYPES)
 
@@ -46,7 +51,9 @@ def load_dataset(data_type="ica_filtered", test_type="Arithmetic"):
 def load_labels():
     '''
     Loads labels from the dataset and transforms the label values to binary values.
-    Values larger than 5 are set to 1 and values lower than or equal to 5 are set to zero.
+
+    Returns:
+        ndarray: The labels.
     '''
     labels = pd.read_excel(v.LABELS_PATH)
     labels = labels.rename(columns=v.COLUMNS_TO_RENAME)
@@ -58,8 +65,16 @@ def load_labels():
 
 def format_labels(labels, test_type="Arithmetic", epochs=1):
     '''
-    Filter the labels to keep the labels from the test type specified by test_type.
-    Repeat the labels by the amount of epochs in a recording, specified by epochs.
+    Filter the labels and repeat for the specified amount of epochs.
+
+    Args:
+        labels (ndarray): The labels.
+        test_type (string): The test_type to filter by. Defaults to "Arithmetic".
+        epochs (int): The amount of epochs. Defaults to 1.
+
+    Returns:
+        ndarray: The formatted labels.
+
     '''
     assert (test_type in v.TEST_TYPES)
 
@@ -74,13 +89,23 @@ def format_labels(labels, test_type="Arithmetic", epochs=1):
     return formatted_labels
 
 
-def convert_to_epochs(dataset, n_channels, sfreq):
+def split_data(data, sfreq):
     '''
     Splits EEG data into epochs with length 1 sec.
+
+    Args:
+        data (ndarray): EEG data.
+        sfreq (int): The sampling frequency.
+    
+    Returns:
+        ndarray: The epoched data.
+
     '''
-    epoched_dataset = np.empty(
-        (dataset.shape[0], dataset.shape[2]//sfreq, n_channels, sfreq))
-    for i in range(dataset.shape[0]):
-        for j in range(dataset.shape[2]//sfreq):
-            epoched_dataset[i, j] = dataset[i, :, j*sfreq:(j+1)*sfreq]
-    return epoched_dataset
+
+    n_trials, n_channels, n_samples = data.shape
+
+    epoched_data = np.empty((n_trials, n_samples//sfreq, n_channels, sfreq))
+    for i in range(data.shape[0]):
+        for j in range(data.shape[2]//sfreq):
+            epoched_data[i, j] = data[i, :, j*sfreq:(j+1)*sfreq]
+    return epoched_data

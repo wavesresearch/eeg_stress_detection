@@ -11,7 +11,7 @@ Contains functions for loading and transforming the dataset
 
 Loads data from the SAM 40 Dataset with the test specified by test_type.
 The data_type parameter specifies which of the datasets to load. Possible values are raw, filtered, ica_filtered.
-Returns a Numpy Array with shape (120, 32, 3200).
+Returns an ndarray with shape (120, 32, 3200).
 
 ```load_labels()```
 
@@ -24,7 +24,7 @@ Filter the labels to keep the labels from the test type specified by test_type.
 Repeat the labels by the amount of epochs in a recording, specified by epochs.
 
 
-```convert_to_epochs(dataset, channels, sfreq)```
+```split_data(dataset, sfreq)```
 
 Splits EEG data into epochs with length 1 sec.
 
@@ -41,33 +41,33 @@ The filtering is performed using the [```mne``` package](https://mne.tools/stabl
 
 **features**
 
-```time_series_features(data, channels)```
+```time_series_features(data)```
 
 Compute the features peak-to-peak amplitude, variance and rms using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
-```fractal_features(data, channels)```
+```freq_band_features(data, freq_bands)```
 
-Compute the Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
+Compute the frequency bands delta, theta, alpha, beta and gamma using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
-```entropy_features(data, channels, sfreq)```
-
-Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
-The data should be on the form (n_trials, n_secs, n_channels, sfreq)
-The output is on the form (n_trials\*n_secs, n_channels\*n_features)
-
-```hjorth_features(data, channels, sfreq)```
+```hjorth_features(data)```
 
 Compute the features Hjorth mobility (spectral) and Hjorth complexity (spectral) using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
-```freq_band_features(data, channels, sfreq, freq_bands)```
+```fractal_features(data)```
 
-Compute the frequency bands delta, theta, alpha, beta and gamma using the package mne_features.
+Compute the Higuchi Fractal Dimension and Katz Fractal Dimension using the package mne_features.
+The data should be on the form (n_trials, n_secs, n_channels, sfreq)
+The output is on the form (n_trials\*n_secs, n_channels\*n_features)
+
+```entropy_features(data)```
+
+Compute the features Approximate Entropy, Sample Entropy, Spectral Entropy and SVD entropy using the package mne_features.
 The data should be on the form (n_trials, n_secs, n_channels, sfreq)
 The output is on the form (n_trials\*n_secs, n_channels\*n_features)
 
