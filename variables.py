@@ -26,3 +26,6 @@ TEST_TYPE_COLUMNS = {
     'Mirror': ['t1_mirror', 't2_mirror', 't3_mirror'],
     'Stroop': ['t1_stroop', 't2_stroop', 't3_stroop']
 }
+
+N_CLASSES = 2
+SFREQ = 128
