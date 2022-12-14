@@ -10,7 +10,7 @@ Contains functions for loading and transforming the dataset
 ```load_dataset(data_type="ica_filtered", test_type="Arithmetic")```
 
 Loads data from the SAM 40 Dataset with the test specified by test_type.
-The data_type parameter specifies which of the datasets to load. Possible values are raw, filtered, ica_filtered.
+The data_type parameter specifies which of the datasets to load. Possible values are raw, wt_filtered, ica_filtered.
 Returns an ndarray with shape (120, 32, 3200).
 
 ```load_labels()```

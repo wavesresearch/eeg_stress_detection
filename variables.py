@@ -17,7 +17,7 @@ COLUMNS_TO_RENAME = {
     'Unnamed: 9': 't3_stroop'
 }
 
-DATA_TYPES = ["raw", "filtered", "ica_filtered"]
+DATA_TYPES = ["raw", "wt_filtered", "ica_filtered"]
 
 TEST_TYPES = ["Arithmetic", "Mirror", "Stroop"]
 

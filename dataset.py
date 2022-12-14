@@ -27,7 +27,7 @@ def load_dataset(data_type="ica_filtered", test_type="Arithmetic"):
     if data_type == "raw":
         dir = v.DIR_RAW
         data_key = 'Data'
-    elif data_type == "filtered":
+    elif data_type == "wt_filtered":
         dir = v.DIR_FILTERED
         data_key = 'Clean_data'
     else:
